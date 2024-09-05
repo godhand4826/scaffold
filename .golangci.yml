@@ -1,0 +1,52 @@
+run:
+  go: 1.23.0
+  timeout: 2m
+linters:
+  enable:
+    - bodyclose
+    - contextcheck
+    - dogsled
+    - errcheck
+    - funlen
+    - gci
+    - goconst
+    - gocyclo
+    - godot
+    - gofmt
+    - goimports
+    - gosec
+    - gosimple
+    - govet
+    - ineffassign
+    - lll
+    - misspell
+    - nakedret
+    - revive
+    - staticcheck
+    - typecheck
+    - unconvert
+    - unparam
+    - unused
+linters-settings:
+  funlen:
+    lines: 60
+    statements: 20
+  gocyclo:
+    min-complexity: 10
+  lll:
+    line-length: 120
+  misspell:
+    locale: US
+  nakedret:
+    max-func-lines: 5
+  gci:
+    sections:
+      - standard
+      - default
+      - prefix(github.com/org/project)
+      - blank
+      - dot
+      - alias
+      - localmodule
+    skip-generated: false
+    custom-order: true

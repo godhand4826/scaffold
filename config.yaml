@@ -1,0 +1,7 @@
+fx_verbose: false
+logger:
+  level: info
+  enable_console_encoder: false
+  enable_caller: false
+  enable_utc: false
+server_addr: 0.0.0.0:80
