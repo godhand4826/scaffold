@@ -2,6 +2,10 @@
 run:
 	go run .
 
+.PHONY: build
+build:
+	go build .
+
 .PHONY: test
 test:
 	go test -v -race -cover ./...
@@ -10,7 +14,6 @@ test:
 coverage:
 	go test -coverprofile cover.out ./...
 	go tool cover -html=cover.out -o cover.html
-	$(RM) cover.out
 
 .PHONY: bench
 bench:
@@ -23,7 +26,7 @@ lint:
 .PHONY: clean
 clean:
 	go clean
-	$(RM) cover.out
+	$(RM) cover.out cover.html
 
 .PHONY: docker
 docker:
