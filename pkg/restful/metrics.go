@@ -11,7 +11,7 @@ import (
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 )
 
-func RegisterMetricsHandler(router *chi.Mux) {
+func RegisterMetricsHandler(router chi.Router) {
 	router.Handle("/metrics", promhttp.Handler())
 }
 

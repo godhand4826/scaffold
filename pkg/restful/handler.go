@@ -7,7 +7,7 @@ import (
 	"github.com/go-chi/chi/v5"
 )
 
-func RegisterHandlers(router *chi.Mux) {
+func RegisterHandlers(router chi.Router) {
 	router.Get("/", HelloHandler)
 	router.Get("/ping", PingPongHandler)
 	router.Post("/echo", EchoHandler)

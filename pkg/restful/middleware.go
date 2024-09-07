@@ -8,7 +8,7 @@ import (
 	"github.com/rs/cors"
 )
 
-func RegisterMiddlewares(r *chi.Mux, lf middleware.LogFormatter) {
+func RegisterMiddlewares(r chi.Router, lf middleware.LogFormatter) {
 	r.Use(Metrics())
 	r.Use(middleware.RequestID, SetRequestIDHeader())
 	r.Use(middleware.RealIP)
