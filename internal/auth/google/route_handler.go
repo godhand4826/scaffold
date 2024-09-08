@@ -13,29 +13,29 @@ import (
 
 const UserInfoURL = "https://www.googleapis.com/oauth2/v2/userinfo"
 
-type Handler struct {
+type RouteHandler struct {
 	config *oauth2.Config
 }
 
-func NewHandler(config *oauth2.Config) (*Handler, error) {
+func NewRouteHandler(config *oauth2.Config) (*RouteHandler, error) {
 	if config == nil {
 		return nil, errors.New("providing *oauth2.Config is nil")
 	}
-	return &Handler{
+	return &RouteHandler{
 		config: config,
 	}, nil
 }
 
-func (h *Handler) AttachOn(router chi.Router) {
+func (h *RouteHandler) AttachOn(router chi.Router) {
 	router.Get("/v1/oauth/google", h.Redirect)
 	router.Get("/v1/oauth/google/callback", h.SignIn)
 }
 
-func (h *Handler) Redirect(w http.ResponseWriter, r *http.Request) {
+func (h *RouteHandler) Redirect(w http.ResponseWriter, r *http.Request) {
 	oauth.HandleRedirect(h.config, w, r)
 }
 
-func (h *Handler) SignIn(w http.ResponseWriter, r *http.Request) {
+func (h *RouteHandler) SignIn(w http.ResponseWriter, r *http.Request) {
 	token := oauth.HandleExchange(h.config, w, r)
 	if token == nil {
 		return

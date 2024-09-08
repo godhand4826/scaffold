@@ -17,6 +17,6 @@ var Bundle = fx.Options(
 	handlerfx.Module,
 	restfulfx.Module,
 
-	examplefx.Example,
-	authfx.Auth,
+	examplefx.Module,
+	authfx.Module,
 )

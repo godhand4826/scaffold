@@ -11,18 +11,23 @@ import (
 
 var Module = fx.Options(
 	fx.WithLogger(NewFxLogger),
-	fx.Provide(logger.New),
-	fx.Invoke(RegisterHooks),
+	fx.Provide(NewLogger),
 )
 
-func RegisterHooks(lifecycle fx.Lifecycle, logger *zap.Logger) {
-	lifecycle.Append(fx.StartHook(func() {
-		logger.Info("logger start", zap.String("level", logger.Level().String()))
-	}))
+func NewLogger(lifecycle fx.Lifecycle, config logger.Config) (*zap.Logger, error) {
+	logger, err := logger.New(config)
+	if err != nil {
+		return nil, err
+	}
+
+	logger.Info("logger start", zap.String("level", logger.Level().String()))
+
 	lifecycle.Append(fx.StopHook(func() {
 		logger.Info("flushing logger buffer")
 		_ = logger.Sync()
 	}))
+
+	return logger, err
 }
 
 func NewFxLogger(fxVerbose bool, logger *zap.Logger) fxevent.Logger {

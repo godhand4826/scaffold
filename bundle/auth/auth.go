@@ -1,22 +1,24 @@
 package authfx
 
 import (
-	"github.com/go-chi/chi/v5"
 	"go.uber.org/fx"
 
 	"scaffold/internal/auth/github"
 	"scaffold/internal/auth/google"
+	"scaffold/pkg/restful"
 )
 
-var Auth = fx.Options(
-	fx.Provide(fx.Annotate(google.NewHandler, fx.ParamTags(`name:"google_oauth"`))),
-	fx.Provide(fx.Annotate(github.NewHandler, fx.ParamTags(`name:"github_oauth"`))),
-	fx.Invoke(func(
-		router chi.Router,
-		googleHandler *google.Handler,
-		githubHandler *github.Handler,
-	) {
-		googleHandler.AttachOn(router)
-		githubHandler.AttachOn(router)
-	}),
+var Module = fx.Options(
+	fx.Provide(fx.Annotate(
+		google.NewRouteHandler,
+		fx.As(new(restful.RouteHandler)),
+		fx.ParamTags(`name:"google_oauth"`),
+		fx.ResultTags(`group:"route_handler"`),
+	)),
+	fx.Provide(fx.Annotate(
+		github.NewRouteHandler,
+		fx.As(new(restful.RouteHandler)),
+		fx.ParamTags(`name:"github_oauth"`),
+		fx.ResultTags(`group:"route_handler"`),
+	)),
 )
