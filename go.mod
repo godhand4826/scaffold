@@ -13,6 +13,7 @@ require (
 	github.com/spf13/viper v1.19.0
 	go.uber.org/fx v1.22.2
 	go.uber.org/zap v1.27.0
+	golang.org/x/oauth2 v0.21.0
 )
 
 require (

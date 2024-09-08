@@ -9,10 +9,10 @@ import (
 )
 
 type Config struct {
-	Level                string `mapstructure:"level"`
-	EnableConsoleEncoder bool   `mapstructure:"enable_console_encoder"`
-	EnableCaller         bool   `mapstructure:"enable_caller"`
-	EnableUTC            bool   `mapstructure:"enable_utc"`
+	Level                string
+	EnableConsoleEncoder bool
+	EnableCaller         bool
+	EnableUTC            bool
 }
 
 func New(config Config) (*zap.Logger, error) {

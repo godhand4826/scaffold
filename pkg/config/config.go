@@ -9,19 +9,22 @@ import (
 	"github.com/joho/godotenv"
 	"github.com/spf13/pflag"
 	"github.com/spf13/viper"
+	"golang.org/x/oauth2"
 
 	"scaffold/pkg/logger"
 )
 
 type Config struct {
-	Config     string        `mapstructure:"config"`
-	FxVerbose  bool          `mapstructure:"fx_verbose"`
-	Logger     logger.Config `mapstructure:"logger"`
-	ServerAddr string        `mapstructure:"server_addr"`
+	Config      string
+	FxVerbose   bool
+	Logger      logger.Config
+	ServerAddr  string
+	GoogleOAuth *oauth2.Config
+	GithubOAuth *oauth2.Config
 }
 
 func Load() (*Config, error) {
-	var config Config
+	var cfg _Config
 
 	_ = godotenv.Load()
 
@@ -33,7 +36,7 @@ func Load() (*Config, error) {
 			return envKey
 		}),
 		flagsfiller.NoSetFromEnv(),
-	).Fill(flag.CommandLine, &config); err != nil {
+	).Fill(flag.CommandLine, &cfg); err != nil {
 		return nil, err
 	}
 	pflag.CommandLine.AddGoFlagSet(flag.CommandLine)
@@ -48,11 +51,11 @@ func Load() (*Config, error) {
 		return nil, err
 	}
 
-	if err := viper.Unmarshal(&config); err != nil {
+	if err := viper.Unmarshal(&cfg); err != nil {
 		return nil, err
 	}
 
-	return &config, nil
+	return cfg.toConfig(), nil
 }
 
 func camelSplitByDashToSnakeSplitByDot(name string) string {

@@ -5,3 +5,17 @@ logger:
   enable_caller: false
   enable_utc: false
 server_addr: 0.0.0.0:80
+google_oauth:
+  client_id: "<CLIENT_ID>"
+  client_secret: "<CLIENT_SECRET>"
+  redirect_url: "<REDIRECT_URL>"
+  auth_url: "https://accounts.google.com/o/oauth2/auth"
+  token_url: "https://oauth2.googleapis.com/token"
+  scopes: ["openid", "profile", "email"]
+github_oauth:
+  client_id: "<CLIENT_ID>"
+  client_secret: "<CLIENT_SECRET>"
+  redirect_url: "<REDIRECT_URL>"
+  auth_url: "https://github.com/login/oauth/authorize"
+  token_url: "https://github.com/login/oauth/access_token"
+  scopes: []
