@@ -22,14 +22,12 @@ func RegisterHooks(
 	logger *zap.Logger,
 ) {
 	lifecycle.Append(fx.StartHook(func() {
-		logger.Info("HTTP server start", zap.String("addr", server.Addr))
-
 		go func() {
-			err := server.ListenAndServe()
-			if err != nil && err != http.ErrServerClosed {
+			logger.Info("HTTP server start", zap.String("addr", server.Addr))
+			if err := server.ListenAndServe(); err != nil && err != http.ErrServerClosed {
 				logger.Error("HTTP server unexpected stopped", zap.Error(err))
 			} else {
-				logger.Info("HTTP server stopped", zap.Error(err))
+				logger.Info("HTTP server stopped")
 			}
 			_ = shutdowner.Shutdown(fx.ExitCode(1))
 		}()
