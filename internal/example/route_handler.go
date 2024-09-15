@@ -5,18 +5,27 @@ import (
 	"net/http"
 
 	"github.com/go-chi/chi/v5"
+
+	"scaffold/internal/auth"
 )
 
-type RouteHandler struct{}
+type RouteHandler struct {
+	middleware *auth.Middleware
+}
 
-func NewRouteHandler() *RouteHandler {
-	return &RouteHandler{}
+func NewRouteHandler(
+	middleware *auth.Middleware,
+) *RouteHandler {
+	return &RouteHandler{
+		middleware: middleware,
+	}
 }
 
 func (h *RouteHandler) AttachOn(router chi.Router) {
 	router.Get("/", h.HelloHandler)
 	router.Get("/ping", h.PingPongHandler)
 	router.Post("/echo", h.EchoHandler)
+	router.With(h.middleware.Auth()).Get("/protect", h.ProtectHandler)
 }
 
 func (*RouteHandler) HelloHandler(w http.ResponseWriter, _ *http.Request) {
@@ -34,4 +43,8 @@ func (*RouteHandler) EchoHandler(w http.ResponseWriter, r *http.Request) {
 
 	w.Header().Set("Content-Type", r.Header.Get("Content-Type"))
 	_, _ = w.Write(body)
+}
+
+func (*RouteHandler) ProtectHandler(w http.ResponseWriter, _ *http.Request) {
+	_, _ = w.Write([]byte("protect"))
 }

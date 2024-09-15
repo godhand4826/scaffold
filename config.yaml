@@ -5,6 +5,9 @@ logger:
   enable_caller: false
   enable_utc: false
 server_addr: 0.0.0.0:80
+jwt:
+  sign_key: "<SIGN_KEY>"
+  expire_time: 20m
 google_oauth:
   client_id: "<CLIENT_ID>"
   client_secret: "<CLIENT_SECRET>"

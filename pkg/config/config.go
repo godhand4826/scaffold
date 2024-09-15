@@ -11,6 +11,7 @@ import (
 	"github.com/spf13/viper"
 	"golang.org/x/oauth2"
 
+	"scaffold/pkg/jwt"
 	"scaffold/pkg/logger"
 )
 
@@ -19,6 +20,7 @@ type Config struct {
 	FxVerbose   bool
 	Logger      logger.Config
 	ServerAddr  string
+	Jwt         jwt.Config
 	GoogleOAuth *oauth2.Config
 	GithubOAuth *oauth2.Config
 }

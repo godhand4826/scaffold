@@ -5,6 +5,7 @@ import (
 	"golang.org/x/oauth2"
 
 	"scaffold/pkg/config"
+	"scaffold/pkg/jwt"
 	"scaffold/pkg/logger"
 )
 
@@ -18,7 +19,8 @@ type Result struct {
 
 	FxVerbose   bool
 	Logger      logger.Config
-	ServerAddr  string         `name:"server_addr"`
+	ServerAddr  string `name:"server_addr"`
+	Jwt         jwt.Config
 	GoogleOAuth *oauth2.Config `name:"google_oauth"`
 	GithubOAuth *oauth2.Config `name:"github_oauth"`
 }
@@ -28,6 +30,7 @@ func NewAnnotatedConfig(cfg *config.Config) Result {
 		FxVerbose:   cfg.FxVerbose,
 		Logger:      cfg.Logger,
 		ServerAddr:  cfg.ServerAddr,
+		Jwt:         cfg.Jwt,
 		GoogleOAuth: cfg.GoogleOAuth,
 		GithubOAuth: cfg.GithubOAuth,
 	}
