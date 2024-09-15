@@ -28,7 +28,7 @@ func (h *RouteHandler) AttachOn(router chi.Router) {
 	router.With(h.middleware.Auth()).Get("/protect", h.ProtectHandler)
 }
 
-func (*RouteHandler) HelloHandler(w http.ResponseWriter, _ *http.Request) {
+func (*RouteHandler) HelloHandler(w http.ResponseWriter, r *http.Request) {
 	_, _ = w.Write([]byte("hello"))
 }
 

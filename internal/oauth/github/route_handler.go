@@ -13,8 +13,8 @@ import (
 
 	"scaffold/internal/auth"
 	"scaffold/pkg/jwt"
+	"scaffold/pkg/log"
 	"scaffold/pkg/oauth"
-	"scaffold/pkg/restful"
 )
 
 type RouteHandler struct {
@@ -60,7 +60,7 @@ func (h *RouteHandler) SignIn(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	restful.GetLogEntry(r).Info("github user login", zap.Any("user_info", userInfo))
+	log.Get(r.Context()).Info("github user login", zap.Any("user_info", userInfo))
 
 	// TODO create account if not exist
 	userID := fmt.Sprintf("github:%d", userInfo.ID)

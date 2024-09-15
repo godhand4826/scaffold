@@ -18,9 +18,7 @@ type zapLogFormatter struct {
 }
 
 func (z *zapLogFormatter) NewLogEntry(r *http.Request) middleware.LogEntry {
-	logger := z.logger.With(
-		zap.String("req_id", middleware.GetReqID(r.Context())),
-	)
+	logger := z.logger.With(zap.String("req_id", middleware.GetReqID(r.Context())))
 
 	return &zapEntry{logger: logger, request: r}
 }
@@ -51,20 +49,6 @@ func (e *zapEntry) Panic(v interface{}, stack []byte) {
 	)
 }
 
-func GetLogEntry(r *http.Request) *zap.Logger {
+func getLogger(r *http.Request) *zap.Logger {
 	return middleware.GetLogEntry(r).(*zapEntry).logger
-}
-
-func LogEntrySetField(r *http.Request, key string, value interface{}) {
-	if entry, ok := r.Context().Value(middleware.LogEntryCtxKey).(*zapEntry); ok {
-		entry.logger = entry.logger.With(zap.Any(key, value))
-	}
-}
-
-func LogEntrySetFields(r *http.Request, fields map[string]interface{}) {
-	if entry, ok := r.Context().Value(middleware.LogEntryCtxKey).(*zapEntry); ok {
-		for key, value := range fields {
-			entry.logger = entry.logger.With(zap.Any(key, value))
-		}
-	}
 }

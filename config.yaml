@@ -1,5 +1,5 @@
 fx_verbose: false
-logger:
+log:
   level: info
   enable_console_encoder: false
   enable_caller: false

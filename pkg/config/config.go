@@ -12,13 +12,13 @@ import (
 	"golang.org/x/oauth2"
 
 	"scaffold/pkg/jwt"
-	"scaffold/pkg/logger"
+	"scaffold/pkg/log"
 )
 
 type Config struct {
 	Config      string
 	FxVerbose   bool
-	Logger      logger.Config
+	Log         log.Config
 	ServerAddr  string
 	Jwt         jwt.Config
 	GoogleOAuth *oauth2.Config

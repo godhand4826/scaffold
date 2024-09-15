@@ -12,7 +12,7 @@ func RegisterMiddlewares(r chi.Router, lf middleware.LogFormatter) {
 	r.Use(Metrics())
 	r.Use(middleware.RequestID, SetRequestIDHeader())
 	r.Use(middleware.RealIP)
-	r.Use(middleware.RequestLogger(lf))
+	r.Use(middleware.RequestLogger(lf), InjectContextLogger())
 	r.Use(middleware.Recoverer)
 	r.Use(SetCorsHeader())
 	r.Use(middleware.NoCache)

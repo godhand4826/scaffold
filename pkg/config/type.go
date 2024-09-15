@@ -6,13 +6,13 @@ import (
 	"golang.org/x/oauth2"
 
 	"scaffold/pkg/jwt"
-	"scaffold/pkg/logger"
+	"scaffold/pkg/log"
 )
 
 type _Config struct {
 	Config      string  `mapstructure:"config"`
 	FxVerbose   bool    `mapstructure:"fx_verbose"`
-	Logger      _Logger `mapstructure:"logger"`
+	Log         _Logger `mapstructure:"log"`
 	ServerAddr  string  `mapstructure:"server_addr"`
 	Jwt         _Jwt    `mapstructure:"jwt"`
 	GoogleOauth _OAuth  `mapstructure:"google_oauth"`
@@ -23,7 +23,7 @@ func (c _Config) toConfig() *Config {
 	return &Config{
 		Config:      c.Config,
 		FxVerbose:   c.FxVerbose,
-		Logger:      c.Logger.toConfig(),
+		Log:         c.Log.toConfig(),
 		ServerAddr:  c.ServerAddr,
 		Jwt:         c.Jwt.toConfig(),
 		GoogleOAuth: c.GoogleOauth.toConfig(),
@@ -38,8 +38,8 @@ type _Logger struct {
 	EnableUTC            bool   `mapstructure:"enable_utc"`
 }
 
-func (c _Logger) toConfig() logger.Config {
-	return logger.Config(c)
+func (c _Logger) toConfig() log.Config {
+	return log.Config(c)
 }
 
 type _Jwt struct {

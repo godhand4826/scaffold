@@ -6,7 +6,7 @@ import (
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 
-	"scaffold/pkg/logger"
+	"scaffold/pkg/log"
 )
 
 var Module = fx.Options(
@@ -14,8 +14,8 @@ var Module = fx.Options(
 	fx.Provide(NewLogger),
 )
 
-func NewLogger(lifecycle fx.Lifecycle, config logger.Config) (*zap.Logger, error) {
-	logger, err := logger.New(config)
+func NewLogger(lifecycle fx.Lifecycle, config log.Config) (*zap.Logger, error) {
+	logger, err := log.New(config)
 	if err != nil {
 		return nil, err
 	}

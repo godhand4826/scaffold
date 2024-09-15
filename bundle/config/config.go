@@ -6,7 +6,7 @@ import (
 
 	"scaffold/pkg/config"
 	"scaffold/pkg/jwt"
-	"scaffold/pkg/logger"
+	"scaffold/pkg/log"
 )
 
 var Module = fx.Options(
@@ -18,7 +18,7 @@ type Result struct {
 	fx.Out
 
 	FxVerbose   bool
-	Logger      logger.Config
+	Log         log.Config
 	ServerAddr  string `name:"server_addr"`
 	Jwt         jwt.Config
 	GoogleOAuth *oauth2.Config `name:"google_oauth"`
@@ -28,7 +28,7 @@ type Result struct {
 func NewAnnotatedConfig(cfg *config.Config) Result {
 	return Result{
 		FxVerbose:   cfg.FxVerbose,
-		Logger:      cfg.Logger,
+		Log:         cfg.Log,
 		ServerAddr:  cfg.ServerAddr,
 		Jwt:         cfg.Jwt,
 		GoogleOAuth: cfg.GoogleOAuth,
