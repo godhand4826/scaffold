@@ -56,7 +56,8 @@ func (h *RouteHandler) SignIn(w http.ResponseWriter, r *http.Request) {
 
 	userInfo, err := h.fetchUserInfo(r.Context(), token)
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+		log.Get(r.Context()).Error("failed to fetch github user info", zap.Error(err))
+		http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
 		return
 	}
 
@@ -67,7 +68,8 @@ func (h *RouteHandler) SignIn(w http.ResponseWriter, r *http.Request) {
 
 	jwt, err := h.forger.New(userID)
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+		log.Get(r.Context()).Error("failed to forge jwt", zap.Error(err))
+		http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
 		return
 	}
 
@@ -76,7 +78,8 @@ func (h *RouteHandler) SignIn(w http.ResponseWriter, r *http.Request) {
 		UserID:      userID,
 	})
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+		log.Get(r.Context()).Error("failed to encode response", zap.Error(err))
+		http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
 		return
 	}
 }

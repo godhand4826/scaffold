@@ -4,8 +4,10 @@ import (
 	"crypto/rand"
 	"encoding/hex"
 	"net/http"
+	"scaffold/pkg/log"
 	"time"
 
+	"go.uber.org/zap"
 	"golang.org/x/oauth2"
 )
 
@@ -18,7 +20,8 @@ const (
 func HandleRedirect(config *oauth2.Config, w http.ResponseWriter, r *http.Request) {
 	state, err := randomState()
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+		log.Get(r.Context()).Error("failed to generate oauth random state", zap.Error(err))
+		http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
 		return
 	}
 
@@ -46,7 +49,8 @@ func HandleExchange(config *oauth2.Config, w http.ResponseWriter, r *http.Reques
 	code := r.URL.Query().Get(CodeQueryKey)
 	token, err := config.Exchange(r.Context(), code)
 	if err != nil {
-		http.Error(w, http.StatusText(http.StatusUnauthorized), http.StatusUnauthorized)
+		log.Get(r.Context()).Error("failed to exchange access token", zap.Error(err))
+		http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
 		return nil
 	}
 
