@@ -7,14 +7,14 @@ import (
 	configfx "scaffold/bundle/config"
 	examplefx "scaffold/bundle/example"
 	handlerfx "scaffold/bundle/handler"
-	loggerfx "scaffold/bundle/logger"
+	logfx "scaffold/bundle/log"
 	oauthfx "scaffold/bundle/oauth"
 	restfulfx "scaffold/bundle/restful"
 )
 
 var Bundle = fx.Options(
 	configfx.Module,
-	loggerfx.Module,
+	logfx.Module,
 	handlerfx.Module,
 	restfulfx.Module,
 

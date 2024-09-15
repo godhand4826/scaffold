@@ -1,4 +1,4 @@
-package loggerfx
+package logfx
 
 import (
 	"go.uber.org/fx"
