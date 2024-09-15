@@ -10,6 +10,7 @@ import (
 	logfx "scaffold/bundle/log"
 	oauthfx "scaffold/bundle/oauth"
 	restfulfx "scaffold/bundle/restful"
+	webfx "scaffold/bundle/web"
 )
 
 var Bundle = fx.Options(
@@ -18,6 +19,7 @@ var Bundle = fx.Options(
 	handlerfx.Module,
 	restfulfx.Module,
 
+	webfx.Module,
 	examplefx.Module,
 	authfx.Module,
 	oauthfx.Module,
