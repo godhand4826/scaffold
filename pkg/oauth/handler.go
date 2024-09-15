@@ -4,11 +4,12 @@ import (
 	"crypto/rand"
 	"encoding/hex"
 	"net/http"
-	"scaffold/pkg/log"
 	"time"
 
 	"go.uber.org/zap"
 	"golang.org/x/oauth2"
+
+	"scaffold/pkg/log"
 )
 
 const (

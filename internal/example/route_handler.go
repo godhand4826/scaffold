@@ -25,10 +25,10 @@ func (h *RouteHandler) AttachOn(router chi.Router) {
 	router.Get("/", h.HelloHandler)
 	router.Get("/ping", h.PingPongHandler)
 	router.Post("/echo", h.EchoHandler)
-	router.With(h.middleware.Auth()).Get("/protect", h.ProtectHandler)
+	router.With(h.middleware.Auth()).Get("/greet", h.ProtectHandler)
 }
 
-func (*RouteHandler) HelloHandler(w http.ResponseWriter, r *http.Request) {
+func (*RouteHandler) HelloHandler(w http.ResponseWriter, _ *http.Request) {
 	_, _ = w.Write([]byte("hello"))
 }
 
@@ -45,6 +45,6 @@ func (*RouteHandler) EchoHandler(w http.ResponseWriter, r *http.Request) {
 	_, _ = w.Write(body)
 }
 
-func (*RouteHandler) ProtectHandler(w http.ResponseWriter, _ *http.Request) {
-	_, _ = w.Write([]byte("protect"))
+func (*RouteHandler) ProtectHandler(w http.ResponseWriter, r *http.Request) {
+	_, _ = w.Write([]byte("Hi, " + auth.GetSubject(r.Context())))
 }

@@ -34,8 +34,7 @@ func (h *Middleware) Auth() func(http.Handler) http.Handler {
 				return
 			}
 
-			// TODO inject to context
-			_ = subject
+			r = r.WithContext(WithSubject(r.Context(), subject))
 
 			next.ServeHTTP(w, r)
 		}
