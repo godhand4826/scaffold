@@ -11,7 +11,6 @@ import (
 	"go.uber.org/zap"
 	"golang.org/x/oauth2"
 
-	"scaffold/internal/auth"
 	"scaffold/pkg/jwt"
 	"scaffold/pkg/log"
 	"scaffold/pkg/oauth"
@@ -65,22 +64,14 @@ func (h *RouteHandler) SignIn(w http.ResponseWriter, r *http.Request) {
 	// TODO create account if not exist
 	userID := fmt.Sprintf("google:%s", userInfo.ID)
 
-	jwt, err := h.forger.New(userID)
+	jwtStr, err := h.forger.New(userID)
 	if err != nil {
 		log.Get(r.Context()).Error("failed to forge jwt", zap.Error(err))
 		http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
 		return
 	}
 
-	err = json.NewEncoder(w).Encode(auth.LoginResponse{
-		AccessToken: jwt,
-		UserID:      userID,
-	})
-	if err != nil {
-		log.Get(r.Context()).Error("failed to encode response", zap.Error(err))
-		http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
-		return
-	}
+	jwt.ReturnTokenAndRedirect(w, jwtStr, "/")
 }
 
 func (h *RouteHandler) fetchUserInfo(ctx context.Context, token *oauth2.Token) (*UserInfo, error) {
