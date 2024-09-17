@@ -1,0 +1,29 @@
+volumes:
+  postgres:
+services:
+  postgres:
+    image: postgres:15
+    user: postgres
+    volumes:
+      - postgres:/var/lib/postgresql/data
+    environment:
+      - PGDATA=/var/lib/postgresql/data
+      - POSTGRES_DB=scaffold
+      - POSTGRES_USER=postgres_user
+      - POSTGRES_PASSWORD=postgres_password
+    ports:
+      - 5432:5432
+    restart: always
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready"]
+      interval: 2s
+      timeout: 5s
+      retries: 5
+  atlas:
+    build:
+      context: ../
+      dockerfile: infra/atlas.Dockerfile
+    restart: on-failure
+    depends_on:
+      - postgres
+

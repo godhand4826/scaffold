@@ -31,3 +31,27 @@ clean:
 .PHONY: docker
 docker:
 	docker build -t scaffold:latest .
+
+.PHONY: infra
+infra:
+	cd infra && docker compose up -d
+
+.PHONY: migrate.new
+migrate.new:
+	atlas migrate new ${name}
+
+.PHONY: migrate.status
+migrate.status:
+	atlas migrate status --env local
+
+.PHONY: migrate.apply
+migrate.apply:
+	atlas migrate apply --env local
+
+.PHONY: migrate.lint
+migrate.lint:
+	atlas migrate lint --env local --git-base main
+
+.PHONY: migrate.re-hash
+migrate.re-hash:
+	atlas migrate hash --env local
