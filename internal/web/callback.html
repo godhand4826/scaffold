@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OAuth Callback</title>
+    <script>
+        window.onload = async function () {
+            try {
+                await handleOAuthCallback();
+            } catch (error) {
+                console.error('Error during OAuth callback:', error);
+            }
+        };
+
+        async function handleOAuthCallback() {
+            const provider = window.location.pathname.split('/').at(3)
+            const urlParams = new URLSearchParams(window.location.search);
+            const authCode = urlParams.get('code');
+            const state = urlParams.get('state');
+
+            if (!authCode) {
+                console.error('No auth code found in URL');
+                return
+            }
+
+            const data = await fetch(
+                `/v1/oauth/${provider}/exchange?code=${authCode}&state=${state}`,
+                { method: 'GET', headers: { 'Content-Type': 'application/json' }, }
+            ).then(response => response.json())
+            const token = data.token
+            const redirectUrl = data.redirect_url || '/';
+
+            if (!token) {
+                console.error('No token received');
+                return
+            }
+
+            localStorage.setItem('jwtToken', data.token);
+            localStorage.setItem('userID', data.user_id);
+            window.location.href = redirectUrl;
+        }
+
+    </script>
+</head>
+
+<body>
+    <h1>Processing login...</h1>
+    <p>If you are not redirected, please wait...</p>
+</body>
+
+</html>

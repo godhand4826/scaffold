@@ -11,6 +11,7 @@ import (
 	"go.uber.org/zap"
 	"golang.org/x/oauth2"
 
+	"scaffold/internal/auth"
 	"scaffold/pkg/jwt"
 	"scaffold/pkg/log"
 	"scaffold/pkg/oauth"
@@ -39,7 +40,7 @@ func NewRouteHandler(
 
 func (h *RouteHandler) AttachOn(router chi.Router) {
 	router.Get("/v1/oauth/google", h.Redirect)
-	router.Get("/v1/oauth/google/callback", h.SignIn)
+	router.Get("/v1/oauth/google/exchange", h.SignIn)
 }
 
 func (h *RouteHandler) Redirect(w http.ResponseWriter, r *http.Request) {
@@ -71,7 +72,16 @@ func (h *RouteHandler) SignIn(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	jwt.ReturnTokenAndRedirect(w, jwtStr, "/")
+	err = json.NewEncoder(w).Encode(auth.LoginResponse{
+		Token:       jwtStr,
+		UserID:      userID,
+		RedirectURL: "/index",
+	})
+	if err != nil {
+		log.Get(r.Context()).Error("failed to encode response", zap.Error(err))
+		http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
+		return
+	}
 }
 
 func (h *RouteHandler) fetchUserInfo(ctx context.Context, token *oauth2.Token) (*UserInfo, error) {

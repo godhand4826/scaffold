@@ -7,11 +7,38 @@
 </head>
 
 <body>
-    <ul>
-        <li><a href="/v1/oauth/github">github</a></li>
-        <li><a href="/v1/oauth/google">google</a></li>
-    </ul>
-
+    <div id="sign_in" hidden>
+        <ul>
+            <li><a href="/v1/oauth/github">github</a></li>
+            <li><a href="/v1/oauth/google">google</a></li>
+        </ul>
+    </div>
+    <div id="logout" hidden>
+        <div id="profile"> </div>
+        <div><button id="logout_btn">log out</button> </div>
+    </div>
 </body>
+
+<script defer>
+    const $ = q => document.querySelector(q)
+    const $$ = q => document.querySelectorAll(q)
+    const show = q => $$(q).forEach(e => e.removeAttribute('hidden'))
+    const hide = q => $$(q).forEach(e => e.setAttribute('hidden', ''))
+    const logout = () => (localStorage.removeItem('jwtToken'), render())
+    const render = () => {
+        $('#profile').innerText = `Hi, ${localStorage.getItem('userID')}`
+        const isLogin = localStorage.getItem('jwtToken') != null
+        if (!isLogin) {
+            hide('#logout')
+            show('#sign_in')
+        } else {
+            show('#logout')
+            hide('#sign_in')
+        }
+    }
+
+    $('#logout_btn').onclick = logout
+    render()
+</script>
 
 </html>
