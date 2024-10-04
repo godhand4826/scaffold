@@ -34,11 +34,27 @@ docker:
 
 .PHONY: infra
 infra:
+	cd infra && docker compose build
+
+.PHONY: infra.up
+infra.up:
 	cd infra && docker compose up -d
 
-.PHONY: migrate.new
-migrate.new:
-	atlas migrate new ${name}
+.PHONY: infra.down
+infra.down:
+	cd infra && docker compose down --volumes --remove-orphans
+
+.PHONY: ent.new
+ent.new:
+	go run -mod=mod entgo.io/ent/cmd/ent new ${name}
+
+.PHONY: ent.gen
+ent.gen:
+	go generate ./ent
+
+.PHONY: migrate.gen
+migrate.gen:
+	atlas migrate diff ${name} --env local --to "ent://ent/schema"
 
 .PHONY: migrate.status
 migrate.status:

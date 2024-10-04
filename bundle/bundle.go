@@ -9,6 +9,7 @@ import (
 	handlerfx "scaffold/bundle/handler"
 	logfx "scaffold/bundle/log"
 	oauthfx "scaffold/bundle/oauth"
+	pgfx "scaffold/bundle/pg"
 	restfulfx "scaffold/bundle/restful"
 	webfx "scaffold/bundle/web"
 )
@@ -19,6 +20,7 @@ var Bundle = fx.Options(
 	handlerfx.Module,
 	restfulfx.Module,
 
+	pgfx.Module,
 	webfx.Module,
 	examplefx.Module,
 	authfx.Module,

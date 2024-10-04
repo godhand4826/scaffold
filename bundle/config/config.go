@@ -7,6 +7,7 @@ import (
 	"scaffold/pkg/config"
 	"scaffold/pkg/jwt"
 	"scaffold/pkg/log"
+	"scaffold/pkg/pg"
 )
 
 var Module = fx.Options(
@@ -23,6 +24,7 @@ type Result struct {
 	Jwt         jwt.Config
 	GoogleOAuth *oauth2.Config `name:"google_oauth"`
 	GithubOAuth *oauth2.Config `name:"github_oauth"`
+	Postgres    pg.Config
 }
 
 func NewAnnotatedConfig(cfg *config.Config) Result {
@@ -33,5 +35,6 @@ func NewAnnotatedConfig(cfg *config.Config) Result {
 		Jwt:         cfg.Jwt,
 		GoogleOAuth: cfg.GoogleOAuth,
 		GithubOAuth: cfg.GithubOAuth,
+		Postgres:    cfg.Postgres,
 	}
 }

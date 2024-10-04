@@ -13,6 +13,7 @@ import (
 
 	"scaffold/pkg/jwt"
 	"scaffold/pkg/log"
+	"scaffold/pkg/pg"
 )
 
 type Config struct {
@@ -23,6 +24,7 @@ type Config struct {
 	Jwt         jwt.Config
 	GoogleOAuth *oauth2.Config
 	GithubOAuth *oauth2.Config
+	Postgres    pg.Config
 }
 
 func Load() (*Config, error) {

@@ -7,16 +7,18 @@ import (
 
 	"scaffold/pkg/jwt"
 	"scaffold/pkg/log"
+	"scaffold/pkg/pg"
 )
 
 type _Config struct {
-	Config      string  `mapstructure:"config"`
-	FxVerbose   bool    `mapstructure:"fx_verbose"`
-	Log         _Logger `mapstructure:"log"`
-	ServerAddr  string  `mapstructure:"server_addr"`
-	Jwt         _Jwt    `mapstructure:"jwt"`
-	GoogleOauth _OAuth  `mapstructure:"google_oauth"`
-	GithubOauth _OAuth  `mapstructure:"github_oauth"`
+	Config      string    `mapstructure:"config"`
+	FxVerbose   bool      `mapstructure:"fx_verbose"`
+	Log         _Logger   `mapstructure:"log"`
+	ServerAddr  string    `mapstructure:"server_addr"`
+	Jwt         _Jwt      `mapstructure:"jwt"`
+	GoogleOauth _OAuth    `mapstructure:"google_oauth"`
+	GithubOauth _OAuth    `mapstructure:"github_oauth"`
+	Postgres    _Postgres `mapstructure:"postgres"`
 }
 
 func (c _Config) toConfig() *Config {
@@ -28,6 +30,7 @@ func (c _Config) toConfig() *Config {
 		Jwt:         c.Jwt.toConfig(),
 		GoogleOAuth: c.GoogleOauth.toConfig(),
 		GithubOAuth: c.GithubOauth.toConfig(),
+		Postgres:    c.Postgres.toConfig(),
 	}
 }
 
@@ -70,5 +73,23 @@ func (c _OAuth) toConfig() *oauth2.Config {
 			TokenURL: c.TokenURL,
 		},
 		Scopes: c.Scopes,
+	}
+}
+
+type _Postgres struct {
+	User     string `mapstructure:"user"`
+	Password string `mapstructure:"password"`
+	Host     string `mapstructure:"host"`
+	Port     string `mapstructure:"port"`
+	Database string `mapstructure:"database"`
+}
+
+func (c _Postgres) toConfig() pg.Config {
+	return pg.Config{
+		User:     c.User,
+		Password: c.Password,
+		Host:     c.Host,
+		Port:     c.Port,
+		Database: c.Database,
 	}
 }

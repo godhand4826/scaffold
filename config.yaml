@@ -22,3 +22,9 @@ github_oauth:
   auth_url: "https://github.com/login/oauth/authorize"
   token_url: "https://github.com/login/oauth/access_token"
   scopes: []
+postgres:
+  user: postgres_user
+  password: postgres_password
+  host: localhost
+  database: scaffold
+  port: 5432

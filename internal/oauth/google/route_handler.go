@@ -4,27 +4,31 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
-	"fmt"
 	"net/http"
+	"strconv"
 
 	"github.com/go-chi/chi/v5"
 	"go.uber.org/zap"
 	"golang.org/x/oauth2"
 
+	ent "scaffold/ent/oauth"
 	"scaffold/internal/auth"
+	"scaffold/internal/oauth"
 	"scaffold/pkg/jwt"
 	"scaffold/pkg/log"
-	"scaffold/pkg/oauth"
+	oauthHandler "scaffold/pkg/oauth"
 )
 
 type RouteHandler struct {
 	config *oauth2.Config
 	forger *jwt.Forger
+	svc    oauth.Service
 }
 
 func NewRouteHandler(
 	config *oauth2.Config,
 	forger *jwt.Forger,
+	svc oauth.Service,
 ) (*RouteHandler, error) {
 	if config == nil {
 		return nil, errors.New("providing *oauth2.Config is nil")
@@ -35,6 +39,7 @@ func NewRouteHandler(
 	return &RouteHandler{
 		config: config,
 		forger: forger,
+		svc:    svc,
 	}, nil
 }
 
@@ -44,11 +49,11 @@ func (h *RouteHandler) AttachOn(router chi.Router) {
 }
 
 func (h *RouteHandler) Redirect(w http.ResponseWriter, r *http.Request) {
-	oauth.HandleRedirect(h.config, w, r)
+	oauthHandler.HandleRedirect(h.config, w, r)
 }
 
 func (h *RouteHandler) SignIn(w http.ResponseWriter, r *http.Request) {
-	token := oauth.HandleExchange(h.config, w, r)
+	token := oauthHandler.HandleExchange(h.config, w, r)
 	if token == nil {
 		return
 	}
@@ -62,8 +67,16 @@ func (h *RouteHandler) SignIn(w http.ResponseWriter, r *http.Request) {
 
 	log.Get(r.Context()).Info("google user login", zap.Any("user_info", userInfo))
 
-	// TODO create account if not exist
-	userID := fmt.Sprintf("google:%s", userInfo.ID)
+	user, err := h.svc.LinkAndSignIn(
+		r.Context(), ent.IssuerGoogle, userInfo.ID,
+		userInfo.Name, userInfo.Email, userInfo.Picture)
+	if err != nil {
+		log.Get(r.Context()).Error("failed to link and sign in", zap.Error(err))
+		http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
+		return
+	}
+
+	userID := strconv.Itoa(user.ID)
 
 	jwtStr, err := h.forger.New(userID)
 	if err != nil {
