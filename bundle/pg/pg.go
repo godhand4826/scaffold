@@ -21,7 +21,7 @@ func NewPostgres(
 	logger *zap.Logger,
 	config pg.Config,
 ) (*ent.Client, error) {
-	client, err := pg.New(config)
+	client, err := pg.New(config, logger)
 	if err != nil {
 		return nil, err
 	}
@@ -30,13 +30,12 @@ func NewPostgres(
 		ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 		defer cancel()
 
-		logger := logger.With(
+		logger.With(
 			zap.String("host", config.Host),
 			zap.String("port", config.Port),
 			zap.String("database", config.Database),
-		)
+		).Info("ping database")
 
-		logger.Info("ping database")
 		if err := client.Ping(ctx); err != nil {
 			logger.With(zap.Error(err)).Error("failed to ping postgres server")
 

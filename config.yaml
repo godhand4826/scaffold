@@ -28,3 +28,4 @@ postgres:
   host: localhost
   database: scaffold
   port: 5432
+  debug: false

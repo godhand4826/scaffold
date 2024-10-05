@@ -5,6 +5,7 @@ import (
 	"fmt"
 
 	_ "github.com/lib/pq" // pg driver
+	"go.uber.org/zap"
 
 	"scaffold/ent"
 )
@@ -15,16 +16,30 @@ type Config struct {
 	Host     string
 	Port     string
 	Database string
+	Debug    bool
 }
 
-func New(config Config) (*ent.Client, error) {
+func New(config Config, logger *zap.Logger) (*ent.Client, error) {
 	dsn := fmt.Sprintf(
 		"postgresql://%s:%s@%s:%s/%s?sslmode=disable",
 		config.User, config.Password,
 		config.Host, config.Port, config.Database,
 	)
 
-	return ent.Open("postgres", dsn)
+	client, err := ent.Open("postgres", dsn, ent.Log(ZapToEntLogger(logger)))
+	if err != nil {
+		return nil, err
+	}
+
+	if config.Debug {
+		client = client.Debug()
+	}
+
+	return client, nil
+}
+
+func ZapToEntLogger(logger *zap.Logger) func(...any) {
+	return logger.Sugar().Debug
 }
 
 func WithTx(ctx context.Context, client *ent.Client, fn func(tx *ent.Tx) error) error {

@@ -82,6 +82,7 @@ type _Postgres struct {
 	Host     string `mapstructure:"host"`
 	Port     string `mapstructure:"port"`
 	Database string `mapstructure:"database"`
+	Debug    bool   `mapstructure:"debug"`
 }
 
 func (c _Postgres) toConfig() pg.Config {
@@ -91,5 +92,6 @@ func (c _Postgres) toConfig() pg.Config {
 		Host:     c.Host,
 		Port:     c.Port,
 		Database: c.Database,
+		Debug:    c.Debug,
 	}
 }
