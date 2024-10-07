@@ -1,4 +1,4 @@
-package restfulfx
+package bundlefx
 
 import (
 	"context"
@@ -6,16 +6,9 @@ import (
 
 	"go.uber.org/fx"
 	"go.uber.org/zap"
-
-	server "scaffold/pkg/restful"
 )
 
-var Module = fx.Options(
-	fx.Provide(fx.Annotate(server.New, fx.ParamTags("", `name:"server_addr"`))),
-	fx.Invoke(RegisterHooks),
-)
-
-func RegisterHooks(
+func StartServer(
 	lifecycle fx.Lifecycle,
 	shutdowner fx.Shutdowner,
 	server *http.Server,

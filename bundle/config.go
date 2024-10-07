@@ -1,4 +1,4 @@
-package configfx
+package bundlefx
 
 import (
 	"go.uber.org/fx"
@@ -8,11 +8,6 @@ import (
 	"scaffold/pkg/jwt"
 	"scaffold/pkg/log"
 	"scaffold/pkg/pg"
-)
-
-var Module = fx.Options(
-	fx.Provide(config.Load),
-	fx.Provide(NewAnnotatedConfig),
 )
 
 type Result struct {

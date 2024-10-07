@@ -1,4 +1,4 @@
-package pgfx
+package bundlefx
 
 import (
 	"context"
@@ -11,21 +11,13 @@ import (
 	"scaffold/pkg/pg"
 )
 
-var Module = fx.Options(
-	fx.Provide(NewPostgres),
-)
-
-func NewPostgres(
+func StartPostgres(
 	lifecycle fx.Lifecycle,
 	shutdowner fx.Shutdowner,
 	logger *zap.Logger,
 	config pg.Config,
-) (*ent.Client, error) {
-	client, err := pg.New(config, logger)
-	if err != nil {
-		return nil, err
-	}
-
+	client *ent.Client,
+) {
 	lifecycle.Append(fx.StartHook(func() {
 		ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 		defer cancel()
@@ -49,6 +41,4 @@ func NewPostgres(
 
 		logger.Info("postgres client stopped")
 	}))
-
-	return client, nil
 }

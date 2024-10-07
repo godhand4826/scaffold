@@ -1,22 +1,12 @@
-package handlerfx
+package bundlefx
 
 import (
 	"net/http"
 
 	"github.com/go-chi/chi/v5"
-	"go.uber.org/fx"
 	"go.uber.org/zap"
 
 	"scaffold/pkg/restful"
-)
-
-var Module = fx.Options(
-	fx.Provide(fx.Annotate(chi.NewRouter, fx.As(new(http.Handler)), fx.As(new(chi.Router)))),
-	fx.Provide(restful.ZapToRequestLoggerAdaptor),
-	fx.Invoke(restful.RegisterMiddlewares),
-	fx.Invoke(restful.RegisterMetricsHandler),
-	fx.Invoke(restful.RegisterHealthCheckHandler),
-	fx.Invoke(fx.Annotate(RegisterHandlers, fx.ParamTags(`group:"route_handler"`))),
 )
 
 func RegisterHandlers(

@@ -1,4 +1,4 @@
-package logfx
+package bundlefx
 
 import (
 	"go.uber.org/fx"
@@ -7,11 +7,6 @@ import (
 	"go.uber.org/zap/zapcore"
 
 	"scaffold/pkg/log"
-)
-
-var Module = fx.Options(
-	fx.WithLogger(NewFxLogger),
-	fx.Provide(NewLogger),
 )
 
 func NewLogger(lifecycle fx.Lifecycle, config log.Config) (*zap.Logger, error) {

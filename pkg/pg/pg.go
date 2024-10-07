@@ -4,8 +4,9 @@ import (
 	"context"
 	"fmt"
 
-	_ "github.com/lib/pq" // pg driver
 	"go.uber.org/zap"
+
+	_ "github.com/lib/pq" // pg driver
 
 	"scaffold/ent"
 )
