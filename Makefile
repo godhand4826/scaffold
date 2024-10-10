@@ -6,6 +6,10 @@ run:
 build:
 	go build .
 
+.PHONY: mock
+mock:
+	go generate ./mocks
+
 .PHONY: test
 test:
 	go test -v -race -cover ./...

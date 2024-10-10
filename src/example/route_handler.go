@@ -6,7 +6,7 @@ import (
 
 	"github.com/go-chi/chi/v5"
 
-	"scaffold/internal/auth"
+	"scaffold/src/auth"
 )
 
 type RouteHandler struct {

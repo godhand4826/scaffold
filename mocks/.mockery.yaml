@@ -1,0 +1,10 @@
+with-expecter: true
+all: true
+filename: "mock_{{ .InterfaceName | lower }}.go"
+dir: "./{{ trimPrefix .PackagePath \"scaffold\"}}"
+mockname: "Mock{{ .InterfaceName }}"
+outpkg: "mock{{ .PackageName }}"
+recursive: true
+packages:
+  scaffold/src/oauth:
+  scaffold/pkg/restful:

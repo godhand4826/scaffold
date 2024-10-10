@@ -6,17 +6,17 @@ import (
 	"github.com/go-chi/chi/v5"
 	"go.uber.org/fx"
 
-	"scaffold/internal/auth"
-	"scaffold/internal/example"
-	"scaffold/internal/oauth"
-	"scaffold/internal/oauth/github"
-	"scaffold/internal/oauth/google"
-	"scaffold/internal/oauth/repo"
-	"scaffold/internal/web"
 	"scaffold/pkg/config"
 	"scaffold/pkg/jwt"
 	"scaffold/pkg/pg"
 	"scaffold/pkg/restful"
+	"scaffold/src/auth"
+	"scaffold/src/example"
+	"scaffold/src/oauth"
+	"scaffold/src/oauth/github"
+	"scaffold/src/oauth/google"
+	"scaffold/src/oauth/repo"
+	"scaffold/src/web"
 )
 
 const GroupRouterHandler = `group:"route_handler"`

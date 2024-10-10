@@ -12,11 +12,11 @@ import (
 	"golang.org/x/oauth2"
 
 	ent "scaffold/ent/oauth"
-	"scaffold/internal/auth"
-	"scaffold/internal/oauth"
 	"scaffold/pkg/jwt"
 	"scaffold/pkg/log"
 	oauthHandler "scaffold/pkg/oauth"
+	"scaffold/src/auth"
+	"scaffold/src/oauth"
 )
 
 type RouteHandler struct {

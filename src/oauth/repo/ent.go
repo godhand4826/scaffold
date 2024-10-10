@@ -5,11 +5,11 @@ import (
 
 	"scaffold/ent"
 	"scaffold/ent/oauth"
-	o "scaffold/internal/oauth"
 	"scaffold/pkg/pg"
+	oa "scaffold/src/oauth"
 )
 
-var _ o.Repo = (*Repo)(nil)
+var _ oa.Repo = (*Repo)(nil)
 
 type Repo struct {
 	client *ent.Client
